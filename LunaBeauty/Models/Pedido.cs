@@ -11,7 +11,7 @@ namespace LunaBeauty.Models
         public Cliente? ClienteOrigem { get; set; }
         public int VendedorId { get; set; }
         public Vendedor? VendedorOrigem { get; set; }
-        public string Data {  get; set; }
+        public string Data { get; set; }
         [Display(Name = ("Valor total"))]
         public decimal ValorTotal { get; set; }
 
