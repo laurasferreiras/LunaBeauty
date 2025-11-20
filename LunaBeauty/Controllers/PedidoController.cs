@@ -22,7 +22,7 @@ namespace LunaBeauty.Controllers
         // GET: Pedido
         public async Task<IActionResult> Index()
         {
-            var lunaContext = _context.Pedidos.Include(p => p.ClienteOrigem).Include(p => p.ProdutoOrigem).Include(p => p.VendedorOrigem);
+            var lunaContext = _context.Pedidos.Include(p => p.ClienteOrigem).Include(p => p.VendedorOrigem);
             return View(await lunaContext.ToListAsync());
         }
 
@@ -36,7 +36,6 @@ namespace LunaBeauty.Controllers
 
             var pedido = await _context.Pedidos
                 .Include(p => p.ClienteOrigem)
-                .Include(p => p.ProdutoOrigem)
                 .Include(p => p.VendedorOrigem)
                 .FirstOrDefaultAsync(m => m.PedidoId == id);
             if (pedido == null)
@@ -51,7 +50,6 @@ namespace LunaBeauty.Controllers
         public IActionResult Create()
         {
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "ClienteId");
-            ViewData["ProdutoId"] = new SelectList(_context.Produtos, "ProdutoId", "ProdutoId");
             ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "VendedorId");
             return View();
         }
@@ -61,7 +59,7 @@ namespace LunaBeauty.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PedidoId,ProdutoId,ClienteId,VendedorId,Data,ValorTotal")] Pedido pedido)
+        public async Task<IActionResult> Create([Bind("PedidoId,ClienteId,VendedorId,Data")] Pedido pedido)
         {
             if (ModelState.IsValid)
             {
@@ -70,7 +68,6 @@ namespace LunaBeauty.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "ClienteId", pedido.ClienteId);
-            ViewData["ProdutoId"] = new SelectList(_context.Produtos, "ProdutoId", "ProdutoId", pedido.ProdutoId);
             ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "VendedorId", pedido.VendedorId);
             return View(pedido);
         }
@@ -89,7 +86,6 @@ namespace LunaBeauty.Controllers
                 return NotFound();
             }
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "ClienteId", pedido.ClienteId);
-            ViewData["ProdutoId"] = new SelectList(_context.Produtos, "ProdutoId", "ProdutoId", pedido.ProdutoId);
             ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "VendedorId", pedido.VendedorId);
             return View(pedido);
         }
@@ -99,7 +95,7 @@ namespace LunaBeauty.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PedidoId,ProdutoId,ClienteId,VendedorId,Data,ValorTotal")] Pedido pedido)
+        public async Task<IActionResult> Edit(int id, [Bind("PedidoId,ClienteId,VendedorId,Data")] Pedido pedido)
         {
             if (id != pedido.PedidoId)
             {
@@ -127,7 +123,6 @@ namespace LunaBeauty.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "ClienteId", pedido.ClienteId);
-            ViewData["ProdutoId"] = new SelectList(_context.Produtos, "ProdutoId", "ProdutoId", pedido.ProdutoId);
             ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "VendedorId", pedido.VendedorId);
             return View(pedido);
         }
@@ -142,7 +137,6 @@ namespace LunaBeauty.Controllers
 
             var pedido = await _context.Pedidos
                 .Include(p => p.ClienteOrigem)
-                .Include(p => p.ProdutoOrigem)
                 .Include(p => p.VendedorOrigem)
                 .FirstOrDefaultAsync(m => m.PedidoId == id);
             if (pedido == null)
