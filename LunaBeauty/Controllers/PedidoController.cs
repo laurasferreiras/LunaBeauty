@@ -49,8 +49,8 @@ namespace LunaBeauty.Controllers
         // GET: Pedido/Create
         public IActionResult Create()
         {
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "ClienteId");
-            ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "VendedorId");
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome");
+            ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "Nome");
             return View();
         }
 
@@ -67,8 +67,8 @@ namespace LunaBeauty.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "ClienteId", pedido.ClienteId);
-            ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "VendedorId", pedido.VendedorId);
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", pedido.ClienteId);
+            ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "Nome", pedido.VendedorId);
             return View(pedido);
         }
 
@@ -85,8 +85,8 @@ namespace LunaBeauty.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "ClienteId", pedido.ClienteId);
-            ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "VendedorId", pedido.VendedorId);
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", pedido.ClienteId);
+            ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "Nome", pedido.VendedorId);
             return View(pedido);
         }
 
@@ -122,8 +122,8 @@ namespace LunaBeauty.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "ClienteId", pedido.ClienteId);
-            ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "VendedorId", pedido.VendedorId);
+            ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", pedido.ClienteId);
+            ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "Nome", pedido.VendedorId);
             return View(pedido);
         }
 
