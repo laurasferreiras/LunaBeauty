@@ -6,7 +6,7 @@ namespace LunaBeauty.Models
     {
         public int VendedorId { get; set; }
         public string Nome { get; set; }
-        public long Matricula { get; set; }
+        public string Matricula { get; set; }
 
     }
 }

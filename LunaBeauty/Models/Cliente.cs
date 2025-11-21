@@ -12,5 +12,7 @@ namespace LunaBeauty.Models
         [Display(Name = ("Endereço"))]
         public string Endereco { get; set; }
 
+
+
     }
 }
