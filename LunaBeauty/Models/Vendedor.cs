@@ -8,5 +8,8 @@ namespace LunaBeauty.Models
         public string Nome { get; set; }
         public string Matricula { get; set; }
 
+        // ALTERAÇÃO AQUI : Adicionando a lista de Pedidos
+        public List<Pedido> Pedidos { get; set; } = new List<Pedido>();
+
     }
 }

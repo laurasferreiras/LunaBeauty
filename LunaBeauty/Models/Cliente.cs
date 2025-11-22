@@ -12,7 +12,8 @@ namespace LunaBeauty.Models
         [Display(Name = ("Endereço"))]
         public string Endereco { get; set; }
 
-
+        // ALTERAÇÃO AQUI : Adicionando a lista de Pedidos
+        public List<Pedido> Pedidos { get; set; } = new List<Pedido>();
 
     }
 }

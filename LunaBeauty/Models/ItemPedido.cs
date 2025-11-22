@@ -7,7 +7,16 @@
         public Pedido? PedidoOrigem { get; set; }
         public int ProdutoId { get; set; }
         public Produto? ProdutoOrigem { get; set; }
-        public int? Quantidade { get; set; }
+        public int Quantidade { get; set; }
         public decimal ValorTotal { get; set; }
+
+        // ALTERAÇÃO AQUI: Método para calcular ValorTotal
+        public void CalcularValorTotal()
+        {
+            if (ProdutoOrigem != null)
+            {
+                ValorTotal = ProdutoOrigem.Preco * Quantidade;
+            }
+        }
     }
 }

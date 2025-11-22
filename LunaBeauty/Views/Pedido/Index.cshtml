@@ -36,12 +36,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Data)
             </td>
-@*             <td>
-                @foreach (var itens in ViewBag.Itens)
-                    {
-                        <div>@itens.ProdutoOrigem.Nome - Quantidade: @itens.Quantidade</div>
-                    }
-            </td> *@
 
             <td>
                 <a asp-action="Edit" asp-route-id="@item.PedidoId">Edit</a> |

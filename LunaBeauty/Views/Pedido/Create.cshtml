@@ -26,15 +26,30 @@
                 <span asp-validation-for="Data" class="text-danger"></span>
             </div>
             <br />
+
+             @* ALTERAÇÃO DE QUASE TUDO AQUI *@
             <h5>Selecione a quantidade de itens do pedido.</h5>
-            @foreach (var produto in ViewBag.Produtos)
-            {
-                <div class="form-group">
-                    <label>@produto.Nome</label>
-                    <input type="hidden" name="Itens[@produto.ProdutoId].ProdutoId" value="@produto.ProdutoId" />
-                    <input type="number" name="Itens[@produto.ProdutoId].Quantidade" placeholder="Quantidade" />
-                </div>
+
+            @{
+                int index = 0; // Índice para os itens do pedido
             }
+
+            @foreach (var produto in ViewBag.Produtos) // percorre a lista de produtos
+            {
+                <div class="mb-2"> @*so um bloco visual*@
+                    <label>@produto.Nome</label> @*mostra o nome*@
+
+                    <input type="hidden" name="Itens[@index].ProdutoId" value="@produto.ProdutoId" /> @*campo oculto para o id e nome do produto*@
+                    <input type="number" name="Itens[@index].Quantidade"
+                           class="form-control"
+                           placeholder="Quantidade"
+                           min="0" />
+
+                </div>
+                index++;
+            }
+          
+        
             <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

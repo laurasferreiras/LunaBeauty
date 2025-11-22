@@ -14,13 +14,13 @@
             @Html.DisplayNameFor(model => model.ClienteOrigem)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ClienteOrigem.ClienteId)
+            @Html.DisplayFor(model => model.ClienteOrigem.Nome)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.VendedorOrigem)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.VendedorOrigem.VendedorId)
+            @Html.DisplayFor(model => model.VendedorOrigem.Nome)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Data)
@@ -30,13 +30,30 @@
         </dd>
     </dl>
 </div>
-@* <h4>Itens do Pedido</h4>
-<ul>
-    @foreach (var item in Model.Itens)
-    {
-        <li>@item.ProdutoOrigem.Nome - Quantidade: @item.Quantidade</li>
-    }
-</ul> *@
+
+@*TAMBEM ALTEREI BASTANTE COISA AQUI, SO CRIA UMA TABELA E CHAMA OS ITENS PRA MOSTRAR LA*@
+<h4>Itens do Pedido</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Valor Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Itens)
+        {
+            <tr>
+                <td>@item.ProdutoOrigem.Nome</td>
+                <td>@item.Quantidade</td>
+                <td>@item.ValorTotal.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.PedidoId">Edit</a> |
     <a asp-action="Index">Back to List</a>

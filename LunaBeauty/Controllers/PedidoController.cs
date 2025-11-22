@@ -22,10 +22,11 @@ namespace LunaBeauty.Controllers
         // GET: Pedido
         public async Task<IActionResult> Index()
         {
-            var lunaContext = _context.Pedidos.Include(p => p.ClienteOrigem).Include(p => p.VendedorOrigem);
-            //ViewBag.Itens = _context.ItensPedidos
-            //    .Include(i => i.ProdutoOrigem)
-            //    .ToList();
+            var lunaContext = _context.Pedidos
+                .Include(p => p.ClienteOrigem)
+                .Include(p => p.VendedorOrigem)
+                .Include(p => p.Itens)
+                    .ThenInclude(i => i.ProdutoOrigem);  // ALTERAÇÃO AQUI: Inclui itens e produtos
             return View(await lunaContext.ToListAsync());
         }
 
@@ -40,7 +41,10 @@ namespace LunaBeauty.Controllers
             var pedido = await _context.Pedidos
                 .Include(p => p.ClienteOrigem)
                 .Include(p => p.VendedorOrigem)
+                .Include(p => p.Itens)
+                    .ThenInclude(i => i.ProdutoOrigem)
                 .FirstOrDefaultAsync(m => m.PedidoId == id);
+
             if (pedido == null)
             {
                 return NotFound();
@@ -48,6 +52,7 @@ namespace LunaBeauty.Controllers
 
             return View(pedido);
         }
+
 
         // GET: Pedido/Create
         public IActionResult Create()
@@ -71,10 +76,21 @@ namespace LunaBeauty.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Para cada item enviado do form --> ALTERAÇÃO AQUI: Calcula o valor total de cada item
+                foreach (var item in pedido.Itens)
+                {
+                    // Carrega o produto associado ao item
+                    item.ProdutoOrigem = await _context.Produtos.FindAsync(item.ProdutoId);
+
+                    // Calcula o total do item
+                    item.CalcularValorTotal();
+                }
+
                 _context.Add(pedido);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", pedido.ClienteId);
             ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "Nome", pedido.VendedorId);
             ViewBag.Produtos = _context.Produtos.ToList();
