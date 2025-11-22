@@ -25,6 +25,17 @@
                 <input asp-for="Data" class="form-control" />
                 <span asp-validation-for="Data" class="text-danger"></span>
             </div>
+            <br />
+            <h5>Selecione a quantidade de itens do pedido.</h5>
+            @foreach (var produto in ViewBag.Produtos)
+            {
+                <div class="form-group">
+                    <label>@produto.Nome</label>
+                    <input type="hidden" name="Itens[@produto.ProdutoId].ProdutoId" value="@produto.ProdutoId" />
+                    <input type="number" name="Itens[@produto.ProdutoId].Quantidade" placeholder="Quantidade" />
+                </div>
+            }
+            <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -32,10 +43,14 @@
     </div>
 </div>
 
+
+
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+

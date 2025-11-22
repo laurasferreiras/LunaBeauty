@@ -23,6 +23,9 @@ namespace LunaBeauty.Controllers
         public async Task<IActionResult> Index()
         {
             var lunaContext = _context.Pedidos.Include(p => p.ClienteOrigem).Include(p => p.VendedorOrigem);
+            //ViewBag.Itens = _context.ItensPedidos
+            //    .Include(i => i.ProdutoOrigem)
+            //    .ToList();
             return View(await lunaContext.ToListAsync());
         }
 
@@ -51,7 +54,12 @@ namespace LunaBeauty.Controllers
         {
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome");
             ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "Nome");
-            return View();
+            ViewBag.Produtos = _context.Produtos.ToList();
+            return View(new Pedido
+            {
+                Itens = new List<ItemPedido>()
+            });
+
         }
 
         // POST: Pedido/Create
@@ -59,7 +67,7 @@ namespace LunaBeauty.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PedidoId,ClienteId,VendedorId,Data")] Pedido pedido)
+        public async Task<IActionResult> Create([Bind("PedidoId,ClienteId,VendedorId,Data,Itens")] Pedido pedido)
         {
             if (ModelState.IsValid)
             {
@@ -69,6 +77,7 @@ namespace LunaBeauty.Controllers
             }
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", pedido.ClienteId);
             ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "Nome", pedido.VendedorId);
+            ViewBag.Produtos = _context.Produtos.ToList();
             return View(pedido);
         }
 
@@ -166,5 +175,9 @@ namespace LunaBeauty.Controllers
         {
             return _context.Pedidos.Any(e => e.PedidoId == id);
         }
+
+
+
     }
 }
+

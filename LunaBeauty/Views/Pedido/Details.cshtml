@@ -30,6 +30,13 @@
         </dd>
     </dl>
 </div>
+@* <h4>Itens do Pedido</h4>
+<ul>
+    @foreach (var item in Model.Itens)
+    {
+        <li>@item.ProdutoOrigem.Nome - Quantidade: @item.Quantidade</li>
+    }
+</ul> *@
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.PedidoId">Edit</a> |
     <a asp-action="Index">Back to List</a>

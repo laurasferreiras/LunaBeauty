@@ -28,14 +28,21 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ClienteOrigem.ClienteId)
+                @Html.DisplayFor(modelItem => item.ClienteOrigem.Nome)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.VendedorOrigem.VendedorId)
+                @Html.DisplayFor(modelItem => item.VendedorOrigem.Nome)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Data)
             </td>
+@*             <td>
+                @foreach (var itens in ViewBag.Itens)
+                    {
+                        <div>@itens.ProdutoOrigem.Nome - Quantidade: @itens.Quantidade</div>
+                    }
+            </td> *@
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.PedidoId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.PedidoId">Details</a> |

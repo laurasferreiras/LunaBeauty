@@ -13,6 +13,8 @@ namespace LunaBeauty.Models
         public Vendedor? VendedorOrigem { get; set; }
         public DateTime Data { get; set; } = DateTime.Now;
 
+        public List<ItemPedido> Itens { get; set; }
+
 
     }
 }
