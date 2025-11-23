@@ -4,9 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Editar pedido</h1>
 
-<h4>Pedido</h4>
+<h4>Pedidos</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -28,15 +28,47 @@
                 <input asp-for="Data" class="form-control" />
                 <span asp-validation-for="Data" class="text-danger"></span>
             </div>
+            <br />
+
+            <h4>Itens do Pedido</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Quantidade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Itens.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @Model.Itens[i].ProdutoOrigem.Nome
+                                <input type="hidden" name="Itens[@i].ItemPedidoId" value="@Model.Itens[i].ItemPedidoId" />
+                                <input type="hidden" name="Itens[@i].ProdutoId" value="@Model.Itens[i].ProdutoId" />
+                            </td>
+                            <td>
+                                <input type="number"
+                                    class="form-control"
+                                    name="Itens[@i].Quantidade"
+                                    value="@Model.Itens[i].Quantidade" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <br />
+
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Salvar alterações" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
+<br />
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-secondary" asp-action="Index">Voltar à lista</a>
 </div>
 
 @section Scripts {

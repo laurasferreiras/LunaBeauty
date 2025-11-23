@@ -22,11 +22,7 @@ namespace LunaBeauty.Controllers
         // GET: Pedido
         public async Task<IActionResult> Index()
         {
-            var lunaContext = _context.Pedidos
-                .Include(p => p.ClienteOrigem)
-                .Include(p => p.VendedorOrigem)
-                .Include(p => p.Itens)
-                    .ThenInclude(i => i.ProdutoOrigem);  // ALTERAÇÃO AQUI: Inclui itens e produtos
+            var lunaContext = _context.Pedidos.Include(p => p.ClienteOrigem).Include(p => p.VendedorOrigem);
             return View(await lunaContext.ToListAsync());
         }
 
@@ -42,7 +38,7 @@ namespace LunaBeauty.Controllers
                 .Include(p => p.ClienteOrigem)
                 .Include(p => p.VendedorOrigem)
                 .Include(p => p.Itens)
-                    .ThenInclude(i => i.ProdutoOrigem)
+                .ThenInclude(i => i.ProdutoOrigem)
                 .FirstOrDefaultAsync(m => m.PedidoId == id);
 
             if (pedido == null)
@@ -76,7 +72,7 @@ namespace LunaBeauty.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Para cada item enviado do form --> ALTERAÇÃO AQUI: Calcula o valor total de cada item
+                // Para cada item enviado do form
                 foreach (var item in pedido.Itens)
                 {
                     // Carrega o produto associado ao item
@@ -84,18 +80,33 @@ namespace LunaBeauty.Controllers
 
                     // Calcula o total do item
                     item.CalcularValorTotal();
+
+                    // --- BAIXA DE ESTOQUE (NOVO) ---
+                    if (item.ProdutoOrigem != null)
+                    {
+                        item.ProdutoOrigem.Estoque -= item.Quantidade;
+
+                        // Garante que não fica negativo (boa prática de governança de dados)
+                        if (item.ProdutoOrigem.Estoque < 0)
+                            item.ProdutoOrigem.Estoque = 0;
+
+                        _context.Update(item.ProdutoOrigem);
+                    }
                 }
 
                 _context.Add(pedido);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
 
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", pedido.ClienteId);
             ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "Nome", pedido.VendedorId);
             ViewBag.Produtos = _context.Produtos.ToList();
+
             return View(pedido);
         }
+
 
         // GET: Pedido/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -105,13 +116,19 @@ namespace LunaBeauty.Controllers
                 return NotFound();
             }
 
-            var pedido = await _context.Pedidos.FindAsync(id);
+            var pedido = await _context.Pedidos
+                .Include(p => p.Itens)
+                .ThenInclude(i => i.ProdutoOrigem)
+                .FirstOrDefaultAsync(p => p.PedidoId == id);
+
             if (pedido == null)
             {
                 return NotFound();
             }
+            
             ViewData["ClienteId"] = new SelectList(_context.Clientes, "ClienteId", "Nome", pedido.ClienteId);
             ViewData["VendedorId"] = new SelectList(_context.Vendedores, "VendedorId", "Nome", pedido.VendedorId);
+
             return View(pedido);
         }
 
@@ -120,7 +137,7 @@ namespace LunaBeauty.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PedidoId,ClienteId,VendedorId,Data")] Pedido pedido)
+        public async Task<IActionResult> Edit(int id, [Bind("PedidoId,ClienteId,VendedorId,Data,Itens")] Pedido pedido)
         {
             if (id != pedido.PedidoId)
             {
