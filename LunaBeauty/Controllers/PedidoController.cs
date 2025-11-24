@@ -93,7 +93,6 @@ namespace LunaBeauty.Controllers
                         _context.Update(item.ProdutoOrigem);
                     }
                 }
-
                 _context.Add(pedido);
                 await _context.SaveChangesAsync();
 
