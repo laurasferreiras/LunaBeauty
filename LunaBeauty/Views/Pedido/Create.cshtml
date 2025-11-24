@@ -42,7 +42,8 @@
                     <input type="hidden" name="Itens[@index].ProdutoId" value="@produto.ProdutoId" /> @*campo oculto para o id e nome do produto*@
                     <input type="number" name="Itens[@index].Quantidade"
                            class="form-control"
-                           placeholder="Quantidade"/>
+                           value="0"
+                           min="0" />
 
                 </div>
                 index++;
@@ -66,4 +67,3 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-
