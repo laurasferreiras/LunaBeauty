@@ -81,17 +81,16 @@ namespace LunaBeauty.Controllers
                     // Calcula o total do item
                     item.CalcularValorTotal();
 
-
                     // --- BAIXA DE ESTOQUE (NOVO) ---
                     if (item.ProdutoOrigem != null)
                     {
                         item.ProdutoOrigem.Estoque -= item.Quantidade;
 
                         // Garante que não fica negativo (boa prática de governança de dados)
-                        
+                        if (item.ProdutoOrigem.Estoque < 0)
+                            item.ProdutoOrigem.Estoque = 0;
 
-
-                            _context.Update(item.ProdutoOrigem);
+                        _context.Update(item.ProdutoOrigem);
                     }
                 }
 
