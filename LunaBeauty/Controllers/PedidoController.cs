@@ -106,7 +106,6 @@ namespace LunaBeauty.Controllers
             {
                 return NotFound();
             }
-
             var pedido = await _context.Pedidos
                 .Include(p => p.Itens)
                 .ThenInclude(i => i.ProdutoOrigem)
@@ -139,7 +138,12 @@ namespace LunaBeauty.Controllers
             {
                 try
                 {
-                    _context.Update(pedido);
+                    foreach (var item in pedido.Itens)
+                    {
+                        item.ProdutoOrigem = await _context.Produtos.FindAsync(item.ProdutoId);
+                        item.CalcularValorTotal();
+                    }
+                        _context.Update(pedido);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
