@@ -27,19 +27,18 @@
             </div>
             <br />
 
-             @* ALTERAÇÃO DE QUASE TUDO AQUI *@
             <h5>Selecione a quantidade de itens do pedido.</h5>
 
             @{
-                int index = 0; // Índice para os itens do pedido
+                int index = 0; 
             }
 
-            @foreach (var produto in ViewBag.Produtos) // percorre a lista de produtos
+            @foreach (var produto in ViewBag.Produtos) 
             {
-                <div class="mb-2"> @*so um bloco visual*@
-                    <label>@produto.Nome</label> @*mostra o nome*@
+                <div class="mb-2"> 
+                    <label>@produto.Nome</label> 
 
-                    <input type="hidden" name="Itens[@index].ProdutoId" value="@produto.ProdutoId" /> @*campo oculto para o id e nome do produto*@
+                    <input type="hidden" name="Itens[@index].ProdutoId" value="@produto.ProdutoId" /> 
                     <input type="number" name="Itens[@index].Quantidade"
                            class="form-control"
                            value="0"

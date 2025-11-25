@@ -15,8 +15,6 @@ namespace LunaBeauty.Models
         public Vendedor? VendedorOrigem { get; set; }
 
         public DateTime Data { get; set; } = DateTime.Now;
-
-        // ALTERAÇÃO AQUI : Adicionando a lista de Pedidos
         public List<ItemPedido> Itens { get; set; } = new List<ItemPedido>();
 
 
